@@ -46,6 +46,8 @@ class FamilyTree:
             person_label_value = person[person_label_key]
             self.nodes.add((person_label_value, person_node_size))
             self.labels[person_label_value] = person_label_value
+            if parents_key not in person.keys() and adoptive_parents_key not in person.keys():
+                raise Exception(f"No {parents_key}/{adoptive_parents_key} defined for {person_label_value}")
             # Add parentage edge
             if parents_key in person.keys():
                 self._add_parents(
@@ -68,11 +70,14 @@ class FamilyTree:
         parents = sorted(person[parents_key])
         # Create parentage hash
         parentage_hash = uuid.uuid5(uuid.NAMESPACE_OID, " ".join(parents))
-        for p in parents:
-            self.nodes.add((p, person_node_size))
-            self.parentage_edges[parentage_hash].add((p, parentage_hash))
-            self.persons_parentages_mapping[p].add(parentage_hash)
-            self.labels[p] = p
+        if len(parents) in [1, 2]:
+            for p in parents:
+                self.nodes.add((p, person_node_size))
+                self.parentage_edges[parentage_hash].add((p, parentage_hash))
+                self.persons_parentages_mapping[p].add(parentage_hash)
+                self.labels[p] = p
+        else:
+            raise Exception(f"{person_label_value} must have 1 or 2 {parents_key}, found: {len(parents)}")
         # Add parents nodes to set
         self.nodes.update((p, person_node_size) for p in parents)
         # Add parentage node to set
