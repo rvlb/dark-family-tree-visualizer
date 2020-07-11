@@ -1,0 +1,72 @@
+{
+    "characters": [
+        {
+            "name": "Jonas Kahnwald",
+            "parents": ["Mikkel Nielsen", "Hannah Kahnwald"]
+        },
+        {
+            "name": "Martha Nielsen",
+            "parents": ["Ulrich Nielsen", "Katharina Nielsen"]
+        },
+        {
+            "name": "The Unknown",
+            "parents": ["Martha Nielsen", "Jonas Kahnwald"]
+        },
+        {
+            "name": "Mikkel Nielsen",
+            "parents": ["Ulrich Nielsen", "Katharina Nielsen"]
+        },
+        {
+            "name": "Magnus Nielsen",
+            "parents": ["Ulrich Nielsen", "Katharina Nielsen"]
+        },
+        {
+            "name": "Ulrich Nielsen",
+            "parents": ["Tronte Nielsen", "Jana Nielsen"]
+        },
+        {
+            "name": "Tronte Nielsen",
+            "parents": ["Agnes Nielsen", "The Unknown"]
+        },
+        {
+            "name": "Silja Tiedemann",
+            "parents": ["Egon Tiedemann", "Hannah Kahnwald"]
+        },
+        {
+            "name": "Agnes Nielsen",
+            "parents": ["Silja Tiedemann", "Bartosz Tiedemann"]
+        },
+        {
+            "name": "Hanno Tauber",
+            "parents": ["Silja Tiedemann", "Bartosz Tiedemann"]
+        },
+        {
+            "name": "Claudia Tiedemann",
+            "parents": ["Egon Tiedemann", "Doris Tiedemann"]
+        },
+        {
+            "name": "Regina Tiedemann",
+            "parents": ["Claudia Tiedemann", "Bernd Doppler"]
+        },
+        {
+            "name": "Bartosz Tiedemann",
+            "parents": ["Regina Tiedemann", "Boris Niewald"]
+        },
+        {
+            "name": "Charlotte Doppler",
+            "parents": ["Hanno Tauber", "Elisabeth Doppler"]
+        },
+        {
+            "name": "Elisabeth Doppler",
+            "parents": ["Peter Doppler", "Charlotte Doppler"]
+        },
+        {
+            "name": "Peter Doppler",
+            "parents": ["Helge Doppler", "Ulla Schmidt"]
+        },
+        {
+            "name": "Helge Doppler",
+            "parents": ["Greta Doppler", "Anatol Veliev"]
+        }
+    ]
+}
