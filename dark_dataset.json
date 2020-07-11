@@ -65,6 +65,10 @@
             "parents": ["Helge Doppler", "Ulla Schmidt"]
         },
         {
+            "name": "Franziska Doppler",
+            "parents": ["Peter Doppler", "Charlotte Doppler"]
+        },
+        {
             "name": "Helge Doppler",
             "parents": ["Greta Doppler", "Anatol Veliev"]
         }
