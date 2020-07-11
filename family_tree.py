@@ -8,7 +8,8 @@ class FamilyTree:
         self,
         dataset,
         dataset_person_label_key="name",
-        dataset_person_parents_key="parents",
+        dataset_parents_key="parents",
+        dataset_adoptive_parents_key="adoptive_parents",
         color_mapping_list=None,
         default_node_color="green",
     ):
@@ -16,41 +17,72 @@ class FamilyTree:
         self.persons_parentages_mapping = defaultdict(set)
         self.parentage_edges = defaultdict(set)
         self.children_edges = defaultdict(set)
+        self.adoptive_children_edges = defaultdict(set)
         self.labels = dict()
 
-        self._generate_nodes_and_edges(dataset, dataset_person_label_key, dataset_person_parents_key)
+        self._generate_nodes_and_edges(
+            dataset,
+            dataset_person_label_key,
+            dataset_parents_key,
+            dataset_adoptive_parents_key,
+        )
 
         self.color_mapping_list = color_mapping_list if color_mapping_list is not None else []
         self.default_node_color = default_node_color
 
     # TODO: allow features such as:
-    # 1 - Adoptive parentage edge
-    # 2 - Marriage edges (without children)
-    # 3 - Improved single parentage edge (point directly from parent -> child)
+    # 1 - Marriage edges (without children, i.e.: Bern Doppler/Greta Doppler, Magnus Nielsen/Franziska Doppler)
+    # 2 - Improved single parentage edge (point directly from parent -> child)
     def _generate_nodes_and_edges(
-        self, persons, person_label_key, person_parents_key, person_node_size=300, parentage_node_size=10
+        self,
+        persons,
+        person_label_key,
+        parents_key,
+        adoptive_parents_key,
+        person_node_size=300,
+        parentage_node_size=10,
     ):
         for person in persons:
             person_label_value = person[person_label_key]
             self.nodes.add((person_label_value, person_node_size))
             self.labels[person_label_value] = person_label_value
             # Add parentage edge
-            if person_parents_key in person.keys():
-                parents = sorted(person[person_parents_key])
-                # Create parentage hash
-                parentage_hash = uuid.uuid5(uuid.NAMESPACE_OID, " ".join(parents))
-                for p in parents:
-                    self.nodes.add((p, person_node_size))
-                    self.parentage_edges[parentage_hash].add((p, parentage_hash))
-                    self.persons_parentages_mapping[p].add(parentage_hash)
-                    self.labels[p] = p
-                # Add parents nodes to set
-                self.nodes.update((p, person_node_size) for p in parents)
-                # Add parentage node to set
-                self.nodes.add((parentage_hash, parentage_node_size))
-                # Add child node to set
-                self.nodes.add((person_label_value, person_node_size))
-                self.children_edges[parentage_hash].add((parentage_hash, person_label_value))
+            if parents_key in person.keys():
+                self._add_parents(
+                    person, person_label_value, parents_key, person_node_size, parentage_node_size
+                )
+            # Add adoptive parentage edge
+            if adoptive_parents_key in person.keys():
+                self._add_parents(
+                    person,
+                    person_label_value,
+                    adoptive_parents_key,
+                    person_node_size,
+                    parentage_node_size,
+                    adoptive=True,
+                )
+
+    def _add_parents(
+        self, person, person_label_value, parents_key, person_node_size, parentage_node_size, adoptive=False
+    ):
+        parents = sorted(person[parents_key])
+        # Create parentage hash
+        parentage_hash = uuid.uuid5(uuid.NAMESPACE_OID, " ".join(parents))
+        for p in parents:
+            self.nodes.add((p, person_node_size))
+            self.parentage_edges[parentage_hash].add((p, parentage_hash))
+            self.persons_parentages_mapping[p].add(parentage_hash)
+            self.labels[p] = p
+        # Add parents nodes to set
+        self.nodes.update((p, person_node_size) for p in parents)
+        # Add parentage node to set
+        self.nodes.add((parentage_hash, parentage_node_size))
+        # Add child node to set
+        self.nodes.add((person_label_value, person_node_size))
+        if adoptive:
+            self.adoptive_children_edges[parentage_hash].add((parentage_hash, person_label_value))
+        else:
+            self.children_edges[parentage_hash].add((parentage_hash, person_label_value))
 
     def _get_node_color(self, node):
         for (color_lambda, color) in self.color_mapping_list:
@@ -104,8 +136,12 @@ class FamilyTree:
         for edges in self.children_edges.values():
             children_edges_set.update(edges)
 
+        adoptive_children_edges_set = set()
+        for edges in self.adoptive_children_edges.values():
+            adoptive_children_edges_set.update(edges)
+
         G = nx.DiGraph()
-        G.add_edges_from(children_edges_set | parentage_edges_set)
+        G.add_edges_from(children_edges_set | adoptive_children_edges_set | parentage_edges_set)
 
         positions = self._adjust_parentage_nodes_positions(
             nx.nx_agraph.pygraphviz_layout(G, root=root_node)
@@ -127,6 +163,7 @@ class FamilyTree:
         )
         nx.draw_networkx_edges(G, pos=positions, edgelist=parentage_edges_set, edge_color="blue", arrows=False)
         nx.draw_networkx_edges(G, pos=positions, edgelist=children_edges_set, edge_color="blue", arrows=True)
+        nx.draw_networkx_edges(G, pos=positions, edgelist=adoptive_children_edges_set, edge_color="cyan", arrows=True)
 
         plt.subplots_adjust(left=0, right=1, top=1, bottom=0)
         plt.show()

@@ -6,7 +6,7 @@
         },
         {
             "name": "Hannah Kahnwald",
-            "parents": ["Sebastian Krüger"]
+            "parents": ["Sebastian Krüger", "Ms Krüger"]
         },
         {
             "name": "Martha Nielsen",
@@ -18,7 +18,12 @@
         },
         {
             "name": "Mikkel Nielsen",
-            "parents": ["Ulrich Nielsen", "Katharina Nielsen"]
+            "parents": ["Ulrich Nielsen", "Katharina Nielsen"],
+            "adoptive_parents": ["Ines Kahnwald"]
+        },
+        {
+            "name": "Ines Kahnwald",
+            "parents": ["Ms Kahnwald", "Daniel Kahnwald"]
         },
         {
             "name": "Magnus Nielsen",
@@ -58,7 +63,8 @@
         },
         {
             "name": "Charlotte Doppler",
-            "parents": ["Hanno Tauber", "Elisabeth Doppler"]
+            "parents": ["Hanno Tauber", "Elisabeth Doppler"],
+            "adoptive_parents": ["H. G. Tannhaus"]
         },
         {
             "name": "Elisabeth Doppler",
@@ -74,7 +80,16 @@
         },
         {
             "name": "Helge Doppler",
-            "parents": ["Greta Doppler", "Anatol Veliev"]
+            "parents": ["Greta Doppler", "Anatol Veliev"],
+            "adoptive_parents": ["Bernd Doppler"]
+        },
+        {
+            "name": "Charlotte Tannhaus",
+            "parents": ["‎Marek Tannhaus", "Sonja Tannhaus"]
+        },
+        {
+            "name": "‎Marek Tannhaus",
+            "parents": ["H. G. Tannhaus", "Ms. Tannhaus"]
         }
     ]
 }
