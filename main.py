@@ -97,7 +97,7 @@ for char in characters:
             labels[p] = p
         # Add marriage nodes to set
         nodes.update((p, 300) for p in parents)
-        nodes.add((marriage_hash, 0))
+        nodes.add((marriage_hash, 10))
         # Add child node to set
         nodes.add((char_name, 300))
         children_edges[marriage_hash].add((marriage_hash, char_name))
@@ -154,6 +154,9 @@ for marriage_hash, edges in marriage_edges.items():
     positions[marriage_hash] = projection
 
 def get_node_color(node):
+    # Check if it's a character node or a marriage node
+    if node[0] in marriage_edges.keys():
+        return "blue"
     if node[0] in impossible_children:
         return "red"
     # Bartosz is a special case because Regina exists in the Origin World
@@ -174,12 +177,12 @@ nx.draw_networkx_nodes(
 )
 nx.draw_networkx_labels(
     G,
-    pos={k: (x, y + 30) for k, (x, y) in positions.items()},
+    pos={k: (x, y + 26) for k, (x, y) in positions.items()},
     labels=labels,
     font_size=8,
     font_weight="bold",
 )
-nx.draw_networkx_edges(G, pos=positions, edgelist=marriage_edges_set, edge_color="black", arrows=False)
+nx.draw_networkx_edges(G, pos=positions, edgelist=marriage_edges_set, edge_color="cyan", arrows=False)
 nx.draw_networkx_edges(G, pos=positions, edgelist=children_edges_set, edge_color="blue", arrows=True)
 
 plt.subplots_adjust(left=0, right=1, top=1, bottom=0)
