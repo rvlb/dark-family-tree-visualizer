@@ -4,7 +4,7 @@ from family_tree import FamilyTree
 with open("dark_dataset.json", mode="r") as f:
     dataset = json.load(f)
 
-ft = FamilyTree(dataset["characters"])
+ft = FamilyTree(dataset, "characters")
 
 ft.color_mapping_list = [
     (lambda n: n[0] in ft.parentage_edges.keys(), "blue"),
@@ -23,4 +23,4 @@ ft.color_mapping_list = [
 ]
 
 root_node = list(ft.persons_parentages_mapping["Silja Tiedemann"])[0]
-ft.plot_graph(root_node=root_node, label_offset_y=30)
+ft.plot_graph(root_node=root_node)

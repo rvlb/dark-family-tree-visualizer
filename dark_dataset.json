@@ -91,5 +91,11 @@
             "name": "‎Marek Tannhaus",
             "parents": ["H. G. Tannhaus", "Ms. Tannhaus"]
         }
+    ],
+    "relationships": [
+        ["Franziska Doppler", "Magnus Nielsen"],
+        ["Bernd Doppler", "Greta Doppler"],
+        ["Peter Doppler", "Bernadette Wöller"],
+        ["Agnes Nielsen", "Doris Tiedemann"]
     ]
 }
