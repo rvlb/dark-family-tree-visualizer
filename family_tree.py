@@ -30,9 +30,7 @@ class FamilyTree:
         self.color_mapping_list = color_mapping_list if color_mapping_list is not None else []
         self.default_node_color = default_node_color
 
-    # TODO: allow features such as:
-    # 1 - Marriage edges (without children, i.e.: Bern Doppler/Greta Doppler, Magnus Nielsen/Franziska Doppler)
-    # 2 - Improved single parentage edge (point directly from parent -> child)
+    # TODO: allow relationship edges (i.e.: Bern Doppler/Greta Doppler, Magnus Nielsen/Franziska Doppler)
     def _generate_nodes_and_edges(
         self,
         persons,
@@ -64,24 +62,33 @@ class FamilyTree:
                     adoptive=True,
                 )
 
+    def _add_parent_node(self, parent, parentage_hash, person_node_size, add_parentage_edge=True):
+        self.nodes.add((parent, person_node_size))
+        if add_parentage_edge:
+            self.parentage_edges[parentage_hash].add((parent, parentage_hash))
+        self.persons_parentages_mapping[parent].add(parentage_hash)
+        self.labels[parent] = parent
+
     def _add_parents(
         self, person, person_label_value, parents_key, person_node_size, parentage_node_size, adoptive=False
     ):
         parents = sorted(person[parents_key])
-        # Create parentage hash
-        parentage_hash = uuid.uuid5(uuid.NAMESPACE_OID, " ".join(parents))
-        if len(parents) in [1, 2]:
+        if len(parents) == 1:
+            p = parents[0]
+            # parentage hash here is the parent name itself
+            parentage_hash = parents[0]
+            self._add_parent_node(p, parentage_hash, person_node_size, add_parentage_edge=False)
+        elif len(parents) == 2:
+            # Create parentage hash
+            parentage_hash = uuid.uuid5(uuid.NAMESPACE_OID, " ".join(parents))
             for p in parents:
-                self.nodes.add((p, person_node_size))
-                self.parentage_edges[parentage_hash].add((p, parentage_hash))
-                self.persons_parentages_mapping[p].add(parentage_hash)
-                self.labels[p] = p
+                self._add_parent_node(p, parentage_hash, person_node_size)
+            # Add parentage node to set
+            self.nodes.add((parentage_hash, parentage_node_size))
         else:
             raise Exception(f"{person_label_value} must have 1 or 2 {parents_key}, found: {len(parents)}")
         # Add parents nodes to set
         self.nodes.update((p, person_node_size) for p in parents)
-        # Add parentage node to set
-        self.nodes.add((parentage_hash, parentage_node_size))
         # Add child node to set
         self.nodes.add((person_label_value, person_node_size))
         if adoptive:
