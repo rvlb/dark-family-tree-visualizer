@@ -23,4 +23,4 @@ ft.color_mapping_list = [
 ]
 
 root_node = list(ft.persons_parentages_mapping["Silja Tiedemann"])[0]
-ft.plot_graph(root_node=root_node, label_offset_y=30)
+ft.plot_graph(root_node=root_node, label_offset_y=25)

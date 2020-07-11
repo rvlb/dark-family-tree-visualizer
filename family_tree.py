@@ -23,6 +23,10 @@ class FamilyTree:
         self.color_mapping_list = color_mapping_list if color_mapping_list is not None else []
         self.default_node_color = default_node_color
 
+    # TODO: allow features such as:
+    # 1 - Adoptive parentage edge
+    # 2 - Marriage edges (without children)
+    # 3 - Improved single parentage edge (point directly from parent -> child)
     def _generate_nodes_and_edges(
         self, persons, person_label_key, person_parents_key, person_node_size=300, parentage_node_size=10
     ):
@@ -66,14 +70,16 @@ class FamilyTree:
     def _adjust_parentage_nodes_positions(self, positions):
         for parentage_hash, edges in self.parentage_edges.items():
             edges_list = [edge[0] for edge in edges]
-            parentage_member_0 = positions[edges_list[0]]
-            parentage_member_1 = positions[edges_list[1]]
-            projection = self._orthogonal_projection(
-                parentage_member_0,
-                parentage_member_1,
-                positions[parentage_hash],
-            )
-            positions[parentage_hash] = projection
+            # Just adjust positioning if there are 2 parents for that parentage node
+            if len(edges_list) == 2:
+                parentage_member_0 = positions[edges_list[0]]
+                parentage_member_1 = positions[edges_list[1]]
+                projection = self._orthogonal_projection(
+                    parentage_member_0,
+                    parentage_member_1,
+                    positions[parentage_hash],
+                )
+                positions[parentage_hash] = projection
         return positions
 
     def get_descendants_from(self, current, descendants_set=None):
