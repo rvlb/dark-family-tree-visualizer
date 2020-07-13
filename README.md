@@ -12,7 +12,8 @@ Soon...
 ## Running with `pygraphviz`
 1. You must install [graphviz](https://graphviz.org/download/) on your machine in order to use `pygraphviz`;
 2. Install the packages listed in `requirements.txt` using `pip`;
-3. In case `pygraphviz` fails, install the other packages separately and then install `pygraphviz` using [this](https://github.com/pygraphviz/pygraphviz/issues/100#issuecomment-385031539).
+3. In case `pygraphviz` fails, install the other packages separately and then install `pygraphviz` using [this](https://github.com/pygraphviz/pygraphviz/issues/100#issuecomment-385031539);
+4. After installation, run `python main.py`.
 
 ## Running without `pygraphviz`
 `pygraphviz` is required in order to use `pygraphviz_layout` from `networkx`. If you wish to use a different layout, you must change the following line on [family_tree.py](https://github.com/rvlb-19/dark-family-tree-visualizer/blob/master/family_tree.py):
