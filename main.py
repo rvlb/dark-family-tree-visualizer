@@ -8,7 +8,7 @@ ft = FamilyTree(dataset, "characters")
 
 ft.color_mapping_list = [
     (lambda n: n[0] in ft.parentage_edges.keys(), "blue"),
-    # This condition deals with descendants from the knot.Why start from Silja?
+    # This condition deals with descendants from the knot. Why start from Silja?
     # We could start from Jonas & Martha's child, but them we would never be able
     # to reach Silja and her descendents, because both her parents exist in the
     # Origin World. However, because she was conceived through time travelling,
